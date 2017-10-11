@@ -9,6 +9,7 @@ module Auth
     begin
       raise "Authorization header missing" unless request.headers['Authorization'].present?
       token = JWT.decode(request.headers['Authorization'].split(' ').last, HMAC_SECRET)[0]
+      raise "Access denied" if params[:user_id].to_i != token["user_id"]
       @user ||= User.find(token["user_id"])
     rescue Exception => e
       json_response({message: e.message}, :unauthorized)
