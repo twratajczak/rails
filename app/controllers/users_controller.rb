@@ -1,4 +1,10 @@
 class UsersController < ApplicationController
+  def auth
+    user = User.find_by(username: auth_params[:username])
+    return head :unauthorized unless user && user.authenticate(auth_params[:password])
+    json_response(token: auth_create(user))
+  end
+
   def index
     @users = User.all
     json_response(@users)

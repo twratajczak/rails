@@ -1,5 +1,5 @@
 class TransfersController < ApplicationController
-  before_action :set_user
+  before_action :auth_check
   before_action :set_transfer, only: [:show, :update, :destroy]
 
   def index
@@ -27,10 +27,6 @@ class TransfersController < ApplicationController
 
   def transfer_params
     params.permit(:account_number_from, :account_number_to, :amount_pennies, :country_code_from, :country_code_to)
-  end
-
-  def set_user
-    @user = User.find(params[:user_id])
   end
 
   def set_transfer
